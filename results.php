@@ -3,8 +3,58 @@
 	<?php require('sidebar.php'); ?>
 	<div class="col-6">
 		<?php 
-		echo "<h1>Cumulative GPA : </h1>"
+
+		$gpa_sum = 0.0;
+		$credit_sum = 0;
+
+		$sql1 = "SELECT * FROM marks,subject WHERE subject.SubjectCode=marks.SubjectId AND marks.CourseId='".$_SESSION['cid']."' AND marks.StudentNo='".$_SESSION['sno']."'";
+		$result1 = mysqli_query($conn, $sql1);
+		$resulCheck1 = mysqli_num_rows($result1);
+		if($resulCheck1>0){
+			while($row = mysqli_fetch_array($result1))
+			{
+				$creditSub = substr($row['SubjectId'], -1);
+				if($row['Marks']){
+					$credit_sum +=$creditSub;
+					setGPA($row['Marks'],$creditSub);
+				}	
+			}
+			echo "<h1>Cumulative GPA : ". round($gpa_sum/$credit_sum,2) . "</h1>";
+		}
+
+
+		function setGPA($m,$c){
+			global $gpa_sum;
+			if($m>84){
+				$gpa_sum += 4.0*$c;
+			}elseif($m>69){
+				$gpa_sum += 4.0*$c;
+			}elseif($m>64){
+				$gpa_sum += 3.7*$c;
+			}elseif($m>59){
+				$gpa_sum += 3.3*$c;
+			}elseif($m>54){
+				$gpa_sum += 3.0*$c ;
+			}elseif($m>49){
+				$gpa_sum += 2.7*$c ;
+			}elseif($m>44){
+				$gpa_sum += 2.3*$c ;;
+			}elseif($m>39){
+				$gpa_sum += 2.0*$c ;
+			}elseif($m>34){
+				$gpa_sum += 1.7*$c ;
+			}elseif($m>29){
+				$gpa_sum += 1.3*$c ;
+			}elseif($m>24){
+				$gpa_sum += 1.0*$c ;
+			}elseif($m>0){
+				$gpa_sum += 0.0*$c ;
+			}else{
+			}
+		}
+
 		?>
+
 		<div class="select">
 			<select class="optionSelect" onload="getResults(3)" onchange="getResults(this.value)" name="semeseter" id="selectSem">
 				<?php
