@@ -17,6 +17,7 @@ Faculty Information System is a student management system that will be suitable 
 
 #### LIVE DEMO : http://nsa94.epizy.com
 
+![Screenshot](https://i.imgur.com/ItxGfWx.png)
 
 #### Stduent
 - Username : SE/2015/003
